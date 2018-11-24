@@ -4,8 +4,6 @@
 
 
 
-
-
 void imprime(int *vet, int tam){
     printf("\n\n");
     for(int i = 0; i < tam; i++){
