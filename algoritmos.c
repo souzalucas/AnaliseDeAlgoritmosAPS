@@ -234,6 +234,7 @@ void quicksort(int *vetor, int left, int right){
 }
 
 
+
 void main(){
 	int v[] = {3,6,7,5,0,11,10,1};
 	heapSort(v, 8);
@@ -243,10 +244,12 @@ void main(){
 	for(i = 0; i < 8; i++)
 		printf("%d ", v[i]);
 
+	
 	/*TESTE DO ALGOTITMO DE MAX_SUB_VETOR*/
 	int x,y,max;
 	Find_MAX_sub_vetor_KADANE(v,9,&x,&y,&max);
-    printf("segmento de soma maxima [%d-%d] com soma %d\n", x,y,max);
+	
+	printf("segmento de soma maxima [%d-%d] com soma %d\n", x,y,max);
 }
 
 
