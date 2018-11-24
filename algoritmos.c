@@ -2,31 +2,31 @@
 #include <stdlib.h>
 #include <math.h>
 
+void troca(int* a, int* b){
+	int aux = *a;
+	*a = *b;
+	*b = aux;
+}
+
 void bubble(int* v, int n){
-	int i, j , aux;
+	int i, j;
 
 	for(i = 0; i < n; i++){
-		for(j = 0; j < n-1; j++){
-			if(v[j] > v[j+1]){
-				aux = v[j];
-				v[j] = v[j+1];
-				v[j+1] = aux;
-			}
-		}
+		for(j = 0; j < n-1; j++)
+			if(v[j] > v[j+1])
+                troca(&v[j], &v[j+1]);
 	}
 }
 
 void bubbleOtimizado(int* v, int n){
-	int i, j, aux;
+	int i, j;
 
 	for(i = 1; i < n; i++){
-		int troca = 0;
+		int hTroca = 0;
 		for(j = 0; j < n-i-1; j++){
 			if(v[j] > v[j+1]){
-				aux = v[j+1];
-				v[j+1] = v[j];
-				v[j] = aux;
-				troca = 1;
+				troca(&v[j], &v[j+1]);
+				hTroca = 1;
 			}
 		}
 		if(troca == 0)
@@ -49,17 +49,14 @@ void insertion(int* v, int n){
 }
 
 void selection(int* v, int n){
-	int i, j, aux;
+	int i, j;
 
 	for(i = 0; i < n; i++){
 		int menor = i;
-		for(j = i+1; j < n; j++){
+		for(j = i+1; j < n; j++)
 			if(v[j] < v[menor])
 				menor = j;
-		}
-		aux = v[i];
-		v[i] = v[menor];
-		v[menor] = aux;	
+        troca(&v[i], &v[menor]);
 	}
 }
 
@@ -111,54 +108,51 @@ void mergeSort(int* v, int p, int r){
 	}
 }
 
-int BuscaBinaria (int x, int v[], int e, int d){
+int BuscaBinaria (int* v, int x, int e, int d){
 	int m = (e + d)/2;
-	if (v[m] == x)
+	if(v[m] == x)
 		return m;
-	if (e >= d)
+	if(e >= d)
 		return -1;
 	else
-		if (v[m] < x)
-			return BuscaBinaria(x, v, m+1, d);
+		if(v[m] < x)
+			return BuscaBinaria(v, x, m+1, d);
 		else
-			return BuscaBinaria(x, v, e, m-1);
+			return BuscaBinaria(v, x, e, m-1);
 }
 
-void fmcs(int* v, int e, int m, int d, int* retorno){
-  int i, j;
+void levaTopo(int* v, int n, int p){
+    int d = 2*p + 1;
+    int e = 2*p + 2;
+    int maior = p; 
 
-  int leftSum;
-  int rightSum;
-  int maxLeft;
-  int maxRight;
-  int sum = 0;
-
-  for(i = m; i >= e; i--){
-    sum += sum;
-    if(sum > leftSum){
-      leftSum = sum;
-      maxLeft = i;
-    }
-  }
-  sum = 0;
-  for(i = m+1; i <= d; i++){
-    sum += sum;
-    if(sum > rightSum){
-      rightSum = sum;
-      maxRight = i;
-    }
-  }
-
-  retorno[0] = maxLeft;
-  retorno[1] = maxRight;
-  retorno[2] = leftSum+rightSum;
+    if(d < n && v[d] > v[maior]) 
+        maior = d; 
+  
+    if(e < n && v[e] > v[maior]) 
+        maior = e; 
+  
+    if(maior != p) { 
+        troca(&v[p], &v[maior]); 
+        levaTopo(v, n, maior); 
+    } 
 }
 
+void heapSort(int* v, int n){
+	int i, tam;
 
+	for(i = n/2 -1; i >= 0; i--){
+        levaTopo(v, n, i);
+	}
+    for(i = n-1; i >= 0; i--){
+        troca(&v[0], &v[i]);
+        levaTopo(v, i, 0);
+    }
+}
 
 void main(){
-	int v[] = {3,6,7,5,0,2,10,1};
-	mergeSort(v, 0, 7);
+	int v[] = {3,6,7,5,0,11,10,1};
+	heapSort(v, 8);
 
 	int i = 0;
 	
