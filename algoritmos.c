@@ -2,6 +2,21 @@
 #include <stdlib.h>
 #include <math.h>
 
+
+
+
+
+void imprime(int *vet, int tam){
+    printf("\n\n");
+    for(int i = 0; i < tam; i++){
+        printf(" %d",vet[i]);
+    }
+    printf("\n");
+
+}
+
+
+
 void troca(int* a, int* b){
 	int aux = *a;
 	*a = *b;
@@ -150,6 +165,75 @@ void heapSort(int* v, int n){
     }
 }
 
+
+void Find_MAX_sub_vetor_KADANE(int *vetor, int tam, int *inicio, int *fim , int *max_total){
+    int max_atual;
+    int xtemp;
+    int i;
+    max_atual = 0;
+    *max_total = -1;
+    xtemp = 0;
+
+    int verif = vetor[0];
+    for(i = 1; i < tam; i++){
+        if(vetor[i] > verif){
+            verif = vetor[i];
+            *inicio = *fim = i;
+        }
+    }
+
+
+    if(verif > 0){
+    
+        for(i=0; i < tam; i++){
+        
+            max_atual = max_atual + vetor[i];
+
+            if(max_atual < 0) { 
+                max_atual = 0;
+                xtemp = i+1;
+            }
+
+            if(max_atual > *max_total){
+                *max_total = max_atual;
+                *inicio = xtemp;
+                *fim = i;
+            }
+        }
+    }else{
+        *max_total = verif;
+    }
+    
+}
+
+
+
+
+int partition(int *vetor, int left, int right){
+
+    int pivo = vetor[right];
+    int i = (left - 1);
+    for(int j = left; j <= right-1; j++){
+        if(vetor[j] <= pivo){
+            i = i + 1;
+            troca(&vetor[i], &vetor[j]);
+        }
+    }
+    troca(&vetor[i+1], &vetor[right]);
+    return (i+1);
+}
+
+/*PARA TESTAR O QUICKSORT, DEVE MANDAR TAMANHO -1 !!*/
+void quicksort(int *vetor, int left, int right){
+    if(left < right){
+        int q = partition(vetor, left, right);
+        
+        quicksort(vetor, left, q-1);
+        quicksort(vetor, q+1,right);
+    }
+}
+
+
 void main(){
 	int v[] = {3,6,7,5,0,11,10,1};
 	heapSort(v, 8);
@@ -158,4 +242,11 @@ void main(){
 	
 	for(i = 0; i < 8; i++)
 		printf("%d ", v[i]);
+
+	/*TESTE DO ALGOTITMO DE MAX_SUB_VETOR*/
+	int x,y,max;
+	Find_MAX_sub_vetor_KADANE(v,9,&x,&y,&max);
+    printf("segmento de soma maxima [%d-%d] com soma %d\n", x,y,max);
 }
+
+
