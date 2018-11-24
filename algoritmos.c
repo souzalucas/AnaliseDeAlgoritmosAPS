@@ -206,6 +206,7 @@ void Find_MAX_sub_vetor_KADANE(int *vetor, int tam, int *inicio, int *fim , int 
     
 }
 
+
 int partition(int *vetor, int left, int right){
 
     int pivo = vetor[right];
