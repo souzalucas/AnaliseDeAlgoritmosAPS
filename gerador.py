@@ -1,20 +1,15 @@
-def cria_arquivo(name):
-    file = open(name, 'w')
+from random import randint
 
-    file.close()
+name = "file"
 
-    return file
+with open(name + "-1000", "w+") as file:
+    for i in range(1000):
+        file.write("%d," % (randint(-999, 1000)))
 
+with open(name + "-10000", "w+") as file:
+    for i in range(10000):
+        file.write("%d," % (randint(-9999, 10000)))
 
-
-
-
-def main():
-    file = cria_arquivo("vetor.txt")
-
-
-
-
-
-if __name__ == "__main__":
-    main() 
+with open(name + "-100000", "w+") as file:
+    for i in range(100000):
+        file.write("%d," % (randint(-99999, 100000)))
