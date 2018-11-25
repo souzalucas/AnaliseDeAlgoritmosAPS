@@ -9,6 +9,7 @@ int* leitor(char* file, int *tam){
     // criando a variável ponteiro para o arquivo
     FILE *pont_arq;
     int num;
+    int i;
     if(strcmp(file,"file-1000") == 0){
 		
 
@@ -22,7 +23,7 @@ int* leitor(char* file, int *tam){
         }
 
         *tam = 1000;
-	    for(int i = 0; i < 1000; i++){
+	    for(i = 0; i < 1000; i++){
 		    fscanf(pont_arq, "%d,", &num);
 		    vetor[i] = num;
 	    }
@@ -41,7 +42,7 @@ int* leitor(char* file, int *tam){
         }
 
         *tam = 10000;
-	    for(int i = 0; i < 10000; i++){
+	    for(i = 0; i < 10000; i++){
 		    fscanf(pont_arq, "%d,", &num);
 		    vetor[i] = num;
 	    }
@@ -61,7 +62,7 @@ int* leitor(char* file, int *tam){
         }
 
         *tam = 100000;
-	    for(int i = 0; i < 100000; i++){
+	    for(i = 0; i < 100000; i++){
 		    fscanf(pont_arq, "%d,", &num);
 		    vetor[i] = num;
 	    }
