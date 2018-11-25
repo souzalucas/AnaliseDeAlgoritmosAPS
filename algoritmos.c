@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <time.h>
 #include "leitor.h"
 
 
@@ -255,11 +256,21 @@ void controlador(char* nome){
 	
 	int *vetor = leitor(nome,&tam);		/* leitor está na biblioteca "leitor.h" */
 
-	imprime(vetor, tam);
+	//imprime(vetor, tam);
 	
-
+	clock_t tempo[2];
+    tempo[0] = clock();
+	//Algoritmo
 	quicksort(vetor,0,tam-1);
-	imprime(vetor, tam);
+	// Algoritmo
+    tempo[1] = clock();
+    double Tempo = ((tempo[1] - tempo[0]) * 1000.0 / CLOCKS_PER_SEC)/1000.0;
+    printf("Tempo gasto: %gs.", Tempo);
+    return;
+
+
+	
+	//imprime(vetor, tam);
 
 
 
@@ -280,7 +291,7 @@ void controlador(char* nome){
 
 int main(){
 	
-	controlador("file-10000");
+	controlador("file-100000");
 
 	return 0;
 }
