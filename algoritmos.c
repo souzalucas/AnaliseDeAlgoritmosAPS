@@ -232,19 +232,18 @@ void quicksort(int *vetor, int left, int right){
     }
 }
 
+
+
 void leitorArquivo(char* nome){
 
-	int tam;
+	int tam = 0;
 	int *vetor = leitor(nome,&tam);
 
 	imprime(vetor, tam);
-	quicksort(vetor,0,tam);
+	quicksort(vetor,0,tam-1);
 	imprime(vetor, tam);
-	
 
 }
-
-
 
 
 int main(){

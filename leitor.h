@@ -9,7 +9,7 @@ int* leitor(char* file, int *tam){
     // criando a variável ponteiro para o arquivo
     FILE *pont_arq;
     int num;
-    if(strcmp(file,"file-1000")){
+    if(strcmp(file,"file-1000") == 0){
 		
 
         int *vetor = (int*)calloc(1000,sizeof(int));
@@ -29,7 +29,7 @@ int* leitor(char* file, int *tam){
         return vetor;
 
 
-	}else if(strcmp(file, "file-10000")){
+	}else if(strcmp(file, "file-10000") == 0){
 		
         int *vetor = (int*)calloc(10000,sizeof(int));
 
@@ -49,7 +49,7 @@ int* leitor(char* file, int *tam){
 
         
 
-	}else if(strcmp(file, "file-100000")){
+	}else if(strcmp(file, "file-100000") == 0){
 		
         int *vetor = (int*)calloc(100000,sizeof(int));
 
