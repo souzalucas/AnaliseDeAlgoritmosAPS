@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <math.h>
 
+#include "leitor.h"
+
 
 
 void imprime(int *vet, int tam){
@@ -230,9 +232,24 @@ void quicksort(int *vetor, int left, int right){
 }
 
 
+void leitorarquivo(char *file){
+
+	int tam;
+	int *vetor = leitor(file, &tam);
+
+	imprime(vetor, tam);
+	quicksort(vetor,0,tam);
+	imprime(vetor, tam);
+	
+}
+
 
 void main(){
-	int v[] = {3,6,7,5,0,11,10,1};
+
+	leitorarquivo("file-1000");
+
+
+	/*int v[] = {3,6,7,5,0,11,10,1};
 	heapSort(v, 8);
 
 	int i = 0;
@@ -241,11 +258,12 @@ void main(){
 		printf("%d ", v[i]);
 
 	
-	/*TESTE DO ALGOTITMO DE MAX_SUB_VETOR*/
+
 	int x,y,max;
 	Find_MAX_sub_vetor_KADANE(v,9,&x,&y,&max);
 	
 	printf("segmento de soma maxima [%d-%d] com soma %d\n", x,y,max);
+	*/
 }
 
 
