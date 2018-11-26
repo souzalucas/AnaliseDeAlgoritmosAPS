@@ -303,7 +303,7 @@ LLI algoritmo_busca(LLI *vetor, LLI tam, char* nome_arquivo){
 
 	printf("Find Subvetor Maximo: Vetor[%ld] ate Vetor[%ld] =>  SOMA = %ld		( sem vetor ordenado! )\n", inicioSubVetor, fimSubVetor, SomaTotal);
 	tempo = ((double)(fim - inicio) / CLOCKS_PER_SEC);
-	fprintf(arquivo, "Find_Max_vetor,%g,%ld\n", tempo, quantidade_loop);
+	fprintf(arquivo, "Find_Max_vetor %g %ld\n", tempo, quantidade_loop);
 	
 
 	qsort(vetor, tam, sizeof(LLI), &cmp);
@@ -318,7 +318,7 @@ LLI algoritmo_busca(LLI *vetor, LLI tam, char* nome_arquivo){
 
 	printf("Busca Binaria: Valor buscado = %ld		( com vetor ordenado! )\n", encontrado);
 	tempo = ((double)(fim - inicio) / CLOCKS_PER_SEC);	
-	fprintf(arquivo, "BuscaBinária,%g,%ld\n", tempo, quantidade_loop);
+	fprintf(arquivo, "BuscaBinária %g %ld\n", tempo, quantidade_loop);
 	
 	fclose(arquivo);
 }
@@ -369,7 +369,7 @@ void algoritmos_ordenacao(LLI *vetor, LLI tam, char* nome_arquivo){
 	bubble(vetorBubble,tam, &quantidade_loop);
 	fim = clock();
 	tempo = ((double)(fim - inicio) / CLOCKS_PER_SEC);
-	fprintf(arquivo, "BubbleSort,%g,%ld\n", tempo, quantidade_loop);
+	fprintf(arquivo, "BubbleSort %g %ld\n", tempo, quantidade_loop);
 
 
 	printf("BubbleSort: ");
@@ -381,7 +381,7 @@ void algoritmos_ordenacao(LLI *vetor, LLI tam, char* nome_arquivo){
 	bubbleOtimizado(vetorBubbleOtimizado,tam, &quantidade_loop);
 	fim = clock();
 	tempo = ((double)(fim - inicio) / CLOCKS_PER_SEC);
-	fprintf(arquivo, "BubbleSort Otimizado,%g,%ld\n", tempo, quantidade_loop);
+	fprintf(arquivo, "BubbleSortOtimizado %g %ld\n", tempo, quantidade_loop);
 
 	printf("BubbleSortOtimizado: ");
 	verifica_ordenacao(vetorBubbleOtimizado, tam);
@@ -393,7 +393,7 @@ void algoritmos_ordenacao(LLI *vetor, LLI tam, char* nome_arquivo){
 	insertion(vetorInsertion, tam, &quantidade_loop);
 	fim = clock();
 	tempo = ((double)(fim - inicio) / CLOCKS_PER_SEC);
-	fprintf(arquivo, "InsertionSort,%g,%ld\n", tempo, quantidade_loop);
+	fprintf(arquivo, "InsertionSort %g %ld\n", tempo, quantidade_loop);
 
 	printf("Insertion: ");
 	verifica_ordenacao(vetorInsertion, tam);
@@ -405,7 +405,7 @@ void algoritmos_ordenacao(LLI *vetor, LLI tam, char* nome_arquivo){
 	selection(vetorSelection, tam, &quantidade_loop);
 	fim = clock();
 	tempo = ((double)(fim - inicio) / CLOCKS_PER_SEC);
-	fprintf(arquivo, "SelectionSort,%g,%ld\n", tempo, quantidade_loop);
+	fprintf(arquivo, "SelectionSort %g %ld\n", tempo, quantidade_loop);
 	
 	printf("selection: ");
 	verifica_ordenacao(vetorSelection, tam);
@@ -418,7 +418,7 @@ void algoritmos_ordenacao(LLI *vetor, LLI tam, char* nome_arquivo){
 	mergeSort(vetorMerge,0,tam, &quantidade_loop);
 	fim = clock();
 	tempo = ((double)(fim - inicio) / CLOCKS_PER_SEC);
-	fprintf(arquivo, "MergeSort,%g,%ld\n", tempo, quantidade_loop);
+	fprintf(arquivo, "MergeSort %g %ld\n", tempo, quantidade_loop);
 	
 	printf("mergesort: ");
 	verifica_ordenacao(vetorMerge, tam);
@@ -430,7 +430,7 @@ void algoritmos_ordenacao(LLI *vetor, LLI tam, char* nome_arquivo){
 	heapSort(vetorHeap, tam, &quantidade_loop);
 	fim = clock();
 	tempo = ((double)(fim - inicio) / CLOCKS_PER_SEC);
-	fprintf(arquivo, "HeapSort,%g,%ld\n", tempo, quantidade_loop);
+	fprintf(arquivo, "HeapSort %g %ld\n", tempo, quantidade_loop);
 	
 	printf("heap: ");
 	verifica_ordenacao(vetorHeap, tam);
@@ -443,7 +443,7 @@ void algoritmos_ordenacao(LLI *vetor, LLI tam, char* nome_arquivo){
 	quicksort(vetorQuick,0,tam-1, &quantidade_loop);
 	fim = clock();
 	tempo = ((double)(fim - inicio) / CLOCKS_PER_SEC);
-	fprintf(arquivo, "QuickSort,%g,%ld\n", tempo, quantidade_loop);
+	fprintf(arquivo, "QuickSort %g %ld\n", tempo, quantidade_loop);
 	
 	printf("quicksort: ");
 	verifica_ordenacao(vetorQuick, tam);
