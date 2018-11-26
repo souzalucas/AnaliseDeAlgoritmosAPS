@@ -74,15 +74,29 @@ def main():
         geradorGrafico1(
             fila_dados,
             "Relação entre a quantidade de iteração de cada algoritmo para um tamanho de [{}]".format(int(i)),
-            "Algoritmo",
+            "Algoritmos de Ordenação",
             "Quantidade de iteração")
         geradorGrafico2(
             fila_dados,
             "Relação entre a quantidade de tempo de cada algoritmo para um tamanho de [{}]".format(int(i)),
-            "Algoritmo",
+            "Algoritmo de Ordenação",
             "Tempo em milisegundos"
             )
 
+
+    for i in [1e3, 1e4, 1e5]:
+            fila_dados = matrix_transposta(leitor("graficoBuscafile-{}".format(int(i))))
+            geradorGrafico1(
+                fila_dados,
+                "Relação entre a quantidade de iteração de cada algoritmo para um tamanho de [{}]".format(int(i)),
+                "Algoritmos de Busca",
+                "Quantidade de iteração")
+            geradorGrafico2(
+                fila_dados,
+                "Relação entre a quantidade de tempo de cada algoritmo para um tamanho de [{}]".format(int(i)),
+                "Algoritmo de Busca",
+                "Tempo em milisegundos"
+                )
     # limpa a tela no Windows ou Linux
     # os.system('cls' if os.name == 'nt' else 'clear')
 

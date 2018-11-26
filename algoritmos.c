@@ -361,7 +361,6 @@ void algoritmos_ordenacao(LLI *vetor, LLI tam, char* nome_arquivo){
 	
 
 	
-	
 	/*analise do bublleSort*/
 	
 	quantidade_loop = 0;
@@ -492,8 +491,7 @@ void controlador(char* nome){
 
 int main(){
 	
-	char nome_arquivo[] = {"file-1000"};
-	/* O controlador toma conta de toda a análize */
+	/* O controlador toma conta de toda a execução e análise dos algoritmos*/
 	controlador("file-1000");	
 	controlador("file-10000");
 	controlador("file-100000");
