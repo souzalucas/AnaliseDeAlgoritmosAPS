@@ -4,13 +4,13 @@
 #include <time.h>
 #include "leitor.h"
 
+typedef long int LLI;
 
-
-void imprime(int *vet, int tam){
+void imprime(LLI *vet, LLI tam){
     printf("\n\n");
-	int i;
+	LLI i;
     for(i = 0; i < tam; i++){
-        printf(" %d",vet[i]);
+        printf(" %ld",vet[i]);
     }
     printf("\n");
 
@@ -18,45 +18,52 @@ void imprime(int *vet, int tam){
 
 
 
-void troca(int* a, int* b){
-	int aux = *a;
+void troca(LLI* a, LLI* b){
+	LLI aux = *a;
 	*a = *b;
 	*b = aux;
 }
 
-void bubble(int* v, int n){
-	int i, j;
+void bubble(LLI* v, LLI n, LLI *execucao){
+	LLI i, j;
 
 	for(i = 0; i < n; i++){
-		for(j = 0; j < n-1; j++)
-			if(v[j] > v[j+1])
-                troca(&v[j], &v[j+1]);
+		for(j = 1; j < n; j++)
+		{
+			*execucao += 1;
+			if(v[j-1] > v[j])
+				troca(&v[j-1], &v[j]);
+		}
 	}
 }
 
-void bubbleOtimizado(int* v, int n){
-	int i, j;
 
-	for(i = 1; i < n; i++){
+
+void bubbleOtimizado(LLI* v, LLI n, LLI* execucao){
+	LLI i, j;
+	for(i = 0; i < n; i++){
 		int hTroca = 0;
-		for(j = 0; j < n-i-1; j++){
-			if(v[j] > v[j+1]){
-				troca(&v[j], &v[j+1]);
+		for(j = 1; j < n-i; j++)
+		{
+			*execucao += 1;
+			if(v[j-1] > v[j]){
+                troca(&v[j-1], &v[j]);
 				hTroca = 1;
 			}
 		}
-		if(troca == 0)
+		if(hTroca == 0)
 			return;
-	}	
+	}
 }
 
-void insertion(int* v, int n){
-	int i, j, aux;
+void insertion(LLI* v, LLI n, LLI* execucao){
+	LLI i, j, aux;
 
 	for(i = 0; i < n; i++){
 		aux = v[i];
 		j = i-1;
 		while(aux < v[j] && j >= 0){
+			*execucao +=1;
 			v[j+1] = v[j];
 			j--;
 		}
@@ -64,22 +71,25 @@ void insertion(int* v, int n){
 	}
 }
 
-void selection(int* v, int n){
-	int i, j;
+void selection(LLI* v, LLI n, LLI *execucao){
+	LLI i, j;
 
 	for(i = 0; i < n; i++){
-		int menor = i;
+		LLI menor = i;
 		for(j = i+1; j < n; j++)
+		{	
+			*execucao +=1;
 			if(v[j] < v[menor])
 				menor = j;
-        troca(&v[i], &v[menor]);
+		}
+		troca(&v[i], &v[menor]);
 	}
 }
 
-void merge(int* v, int p, int m, int r){
-	int n1 = m-p+1, n2 = r-m;
-	int i, j, k;
-	int v1[n1], v2[n2];
+void merge(LLI* v, LLI p, LLI m, LLI r){
+	LLI n1 = m-p+1, n2 = r-m;
+	LLI i, j, k;
+	LLI v1[n1], v2[n2];
 
 	for(i = 0; i < n1; i++)
 		v1[i] = v[p+i];
@@ -113,34 +123,40 @@ void merge(int* v, int p, int m, int r){
 	}
 }
 
-void mergeSort(int* v, int p, int r){
-	int m;
+void mergeSort(LLI* v, LLI p, LLI r, LLI *execucao){
+	LLI m;
 	if(p < r){
 		m = p+(r-p)/2;
 
-		mergeSort(v, p, m);
-		mergeSort(v, m+1, r);
+		*execucao +=1;
+	
+		mergeSort(v, p, m,execucao);
+		mergeSort(v, m+1, r,execucao);
 		merge(v, p, m, r);
 	}
 }
 
-int BuscaBinaria (int* v, int x, int e, int d){
-	int m = (e + d)/2;
+LLI BuscaBinaria(LLI* v, LLI x, LLI e, LLI d, LLI* execucao){
+	LLI m = (e + d)/2;
 	if(v[m] == x)
 		return m;
 	if(e >= d)
 		return -1;
-	else
-		if(v[m] < x)
-			return BuscaBinaria(v, x, m+1, d);
-		else
-			return BuscaBinaria(v, x, e, m-1);
+	else{
+		if(v[m] < x){
+			*execucao +=1;
+			return BuscaBinaria(v, x, m+1, d, execucao);
+		}else{
+			*execucao +=1;
+			return BuscaBinaria(v, x, e, m-1, execucao);
+		}
+	}
 }
 
-void levaTopo(int* v, int n, int p){
-    int d = 2*p + 1;
-    int e = 2*p + 2;
-    int maior = p; 
+void levaTopo(LLI* v, LLI n, LLI p){
+    LLI d = 2*p + 1;
+    LLI e = 2*p + 2;
+    LLI maior = p; 
 
     if(d < n && v[d] > v[maior]) 
         maior = d; 
@@ -154,29 +170,31 @@ void levaTopo(int* v, int n, int p){
     } 
 }
 
-void heapSort(int* v, int n){
-	int i, tam;
+void heapSort(LLI* v, LLI n, LLI *execucao){
+	LLI i, tam;
 
 	for(i = n/2 -1; i >= 0; i--){
         levaTopo(v, n, i);
 	}
     for(i = n-1; i >= 0; i--){
+		*execucao +=1;
         troca(&v[0], &v[i]);
         levaTopo(v, i, 0);
     }
 }
 
 
-void Find_MAX_sub_vetor_KADANE(int *vetor, int tam, int *inicio, int *fim , int *max_total){
-    int max_atual;
-    int xtemp;
-    int i;
+void Find_MAX_sub_vetor_KADANE(LLI *vetor, LLI tam, LLI *inicio, LLI *fim , LLI *max_total, LLI *execucao){
+    LLI max_atual;
+    LLI xtemp;
+    LLI i;
     max_atual = 0;
     *max_total = -1;
     xtemp = 0;
 
-    int verif = vetor[0];
+    LLI verif = vetor[0];
     for(i = 1; i < tam; i++){
+		*execucao +=1;
         if(vetor[i] > verif){
             verif = vetor[i];
             *inicio = *fim = i;
@@ -185,8 +203,11 @@ void Find_MAX_sub_vetor_KADANE(int *vetor, int tam, int *inicio, int *fim , int 
 
 
     if(verif > 0){
+		
     
         for(i=0; i < tam; i++){
+
+			*execucao +=1;
         
             max_atual = max_atual + vetor[i];
 
@@ -208,11 +229,11 @@ void Find_MAX_sub_vetor_KADANE(int *vetor, int tam, int *inicio, int *fim , int 
 }
 
 
-int partition(int *vetor, int left, int right){
+LLI partition(LLI *vetor, LLI left, LLI right){
 
-    int pivo = vetor[right];
-    int i = (left - 1);
-	int j;
+    LLI pivo = vetor[right];
+    LLI i = (left - 1);
+	LLI j;
     for(j = left; j <= right-1; j++){
         if(vetor[j] <= pivo){
             i = i + 1;
@@ -224,75 +245,258 @@ int partition(int *vetor, int left, int right){
 }
 
 /*PARA TESTAR O QUICKSORT, DEVE MANDAR TAMANHO -1 !!*/
-void quicksort(int *vetor, int left, int right){
+void quicksort(LLI *vetor, LLI left, LLI right, LLI *execucao){
     if(left < right){
-        int q = partition(vetor, left, right);
+        LLI q = partition(vetor, left, right);
         
-        quicksort(vetor, left, q-1);
-        quicksort(vetor, q+1,right);
+		*execucao +=1;
+        quicksort(vetor, left, q-1, execucao);
+        quicksort(vetor, q+1,right, execucao);
     }
 }
 
-void verifica_ordenacao(int *vetor, int tam){
-	int verifica = vetor[0];
-	int i = 1;
-	while(verifica <= vetor[i]){
-		verifica = vetor[i];
-		i++;
+void verifica_ordenacao(LLI *vetor, LLI tam){
+	for(LLI i = 1; i < tam; i++)
+	{
+		if(vetor[i-1] > vetor[i])
+		{
+			printf("\n\n  vetor nao esta ordenado! \n\n");
+			printf("  posicao: %ld   ---  valor no vetor[%ld] = %ld \n\n", i,i, vetor[i]);
+			printf("  posicao: %ld   ---  valor no vetor[%ld] = %ld \n\n", i-1,i-1, vetor[i-1]);
+			return ;
+		}
 	}
-	if(i == tam){
-		printf("\n\n  vetor ordenado! \n\n");
-		return;
-	}
-	
-	printf("\n\n  vetor nao esta ordenado! \n\n");
-	printf("  posicao: %d   ---  valor no vetor[%d] = %d \n\n", i,i, vetor[i]);
+	printf("vetor ordenado!\n");
 }
+
+
+
+
+/*##########################################################################################################################*/
+/*											PARTE DE CONTROLE DOS ALGORITMOS                     							*/
+
+int cmp(const void* a,const void* b)
+{
+	return *(LLI*)a - *(LLI*)b;
+}
+
+LLI algoritmo_busca(LLI *vetor, LLI tam, char* nome_arquivo){
+
+	__clock_t inicio;
+	__clock_t fim;
+	double tempo ;
+	LLI quantidade_loop = 0;
+
+	LLI inicioSubVetor;
+	LLI fimSubVetor;
+	LLI SomaTotal = 0;
+
+	FILE *arquivo;
+
+    arquivo = fopen(nome_arquivo, "w+");
+
+	/* Análise do algoritmo de busca subvetor*/
+	quantidade_loop = 0;
+	inicio = clock();
+	Find_MAX_sub_vetor_KADANE(vetor,tam, &inicioSubVetor, &fimSubVetor, &SomaTotal, &quantidade_loop);
+	fim = clock();
+
+	printf("Find Subvetor Maximo: Vetor[%ld] ate Vetor[%ld] =>  SOMA = %ld		( sem vetor ordenado! )\n", inicioSubVetor, fimSubVetor, SomaTotal);
+	tempo = ((double)(fim - inicio) / CLOCKS_PER_SEC);
+	fprintf(arquivo, "Find_Max_vetor,%g,%ld\n", tempo, quantidade_loop);
+	
+
+	qsort(vetor, tam, sizeof(LLI), &cmp);
+
+
+	/* Análise do algoritmo de busca binária*/
+	quantidade_loop = 0;
+	LLI valor_buscar = vetor[fimSubVetor];
+	inicio = clock();
+	LLI encontrado = BuscaBinaria(vetor, valor_buscar, 0,tam, &quantidade_loop);
+	fim = clock();
+
+	printf("Busca Binaria: Valor buscado = %ld		( com vetor ordenado! )\n", encontrado);
+	tempo = ((double)(fim - inicio) / CLOCKS_PER_SEC);	
+	fprintf(arquivo, "BuscaBinária,%g,%ld\n", tempo, quantidade_loop);
+	
+	fclose(arquivo);
+}
+
+void algoritmos_ordenacao(LLI *vetor, LLI tam, char* nome_arquivo){
+
+
+	FILE *arquivo;
+	
+	arquivo = fopen(nome_arquivo, "w+");
+
+	clock_t inicio;
+	clock_t fim;
+	double tempo ;
+	int quant = 7;
+
+
+	LLI quantidade_loop = 0;
+	LLI *vetorBubble = (LLI*)calloc(tam,sizeof(LLI));
+	LLI *vetorBubbleOtimizado = (LLI*)calloc(tam,sizeof(LLI));
+	LLI *vetorInsertion = (LLI*)calloc(tam,sizeof(LLI));
+	LLI *vetorSelection = (LLI*)calloc(tam,sizeof(LLI));
+	LLI *vetorMerge = (LLI*)calloc(tam,sizeof(LLI));
+	LLI *vetorHeap = (LLI*)calloc(tam,sizeof(LLI));
+	LLI *vetorQuick = (LLI*)calloc(tam,sizeof(LLI));
+
+
+	for(LLI i = 0; i < tam; i++){
+		
+		vetorBubble[i] = vetor[i];
+		vetorBubbleOtimizado[i] = vetor[i];
+		vetorInsertion[i] = vetor[i];
+		vetorSelection[i] = vetor[i];
+		vetorMerge[i] = vetor[i];
+		vetorHeap[i] = vetor[i];
+		vetorQuick[i] = vetor[i];
+	}
+
+
+	
+
+	
+	
+	/*analise do bublleSort*/
+	
+	quantidade_loop = 0;
+	inicio = clock();
+	bubble(vetorBubble,tam, &quantidade_loop);
+	fim = clock();
+	tempo = ((double)(fim - inicio) / CLOCKS_PER_SEC);
+	fprintf(arquivo, "BubbleSort,%g,%ld\n", tempo, quantidade_loop);
+
+
+	printf("BubbleSort: ");
+	verifica_ordenacao(vetorBubble, tam);
+	
+	/*analise do bublleSort Otimizado*/
+	quantidade_loop = 0;
+	inicio = clock();
+	bubbleOtimizado(vetorBubbleOtimizado,tam, &quantidade_loop);
+	fim = clock();
+	tempo = ((double)(fim - inicio) / CLOCKS_PER_SEC);
+	fprintf(arquivo, "BubbleSort Otimizado,%g,%ld\n", tempo, quantidade_loop);
+
+	printf("BubbleSortOtimizado: ");
+	verifica_ordenacao(vetorBubbleOtimizado, tam);
+	
+
+	/*analise do insertion */
+	quantidade_loop = 0;
+	inicio = clock();
+	insertion(vetorInsertion, tam, &quantidade_loop);
+	fim = clock();
+	tempo = ((double)(fim - inicio) / CLOCKS_PER_SEC);
+	fprintf(arquivo, "InsertionSort,%g,%ld\n", tempo, quantidade_loop);
+
+	printf("Insertion: ");
+	verifica_ordenacao(vetorInsertion, tam);
+	
+
+	/* análise do selection */
+	quantidade_loop = 0;
+	inicio = clock();
+	selection(vetorSelection, tam, &quantidade_loop);
+	fim = clock();
+	tempo = ((double)(fim - inicio) / CLOCKS_PER_SEC);
+	fprintf(arquivo, "SelectionSort,%g,%ld\n", tempo, quantidade_loop);
+	
+	printf("selection: ");
+	verifica_ordenacao(vetorSelection, tam);
+
+
+
+	/* análise do mergeSort*/
+	quantidade_loop = 0;
+	inicio = clock();
+	mergeSort(vetorMerge,0,tam, &quantidade_loop);
+	fim = clock();
+	tempo = ((double)(fim - inicio) / CLOCKS_PER_SEC);
+	fprintf(arquivo, "MergeSort,%g,%ld\n", tempo, quantidade_loop);
+	
+	printf("mergesort: ");
+	verifica_ordenacao(vetorMerge, tam);
+	
+	/* análise do heapSort */
+	
+	quantidade_loop = 0;
+	inicio = clock();
+	heapSort(vetorHeap, tam, &quantidade_loop);
+	fim = clock();
+	tempo = ((double)(fim - inicio) / CLOCKS_PER_SEC);
+	fprintf(arquivo, "HeapSort,%g,%ld\n", tempo, quantidade_loop);
+	
+	printf("heap: ");
+	verifica_ordenacao(vetorHeap, tam);
+
+
+
+	/* análise do quickSort */
+	quantidade_loop = 0;
+	inicio = clock();
+	quicksort(vetorQuick,0,tam-1, &quantidade_loop);
+	fim = clock();
+	tempo = ((double)(fim - inicio) / CLOCKS_PER_SEC);
+	fprintf(arquivo, "QuickSort,%g,%ld\n", tempo, quantidade_loop);
+	
+	printf("quicksort: ");
+	verifica_ordenacao(vetorQuick, tam);
+
+
+	fclose(arquivo);
+
+	free(vetorBubble);
+	free(vetorBubbleOtimizado);
+	free(vetorInsertion);
+	free(vetorSelection);
+	free(vetorMerge);
+	free(vetorHeap);
+	free(vetorQuick);
+
+	
+}
+
+
 
 
 void controlador(char* nome){
 
-	int tam = 0;
-	
-	int *vetor = leitor(nome,&tam);		/* leitor está na biblioteca "leitor.h" */
+	LLI tam = 0;
 
-	//imprime(vetor, tam);
-	
-	clock_t tempo[2];
-    tempo[0] = clock();
-	//Algoritmo
-	quicksort(vetor,0,tam-1);
-	// Algoritmo
-    tempo[1] = clock();
-    double Tempo = ((tempo[1] - tempo[0]) * 1000.0 / CLOCKS_PER_SEC)/1000.0;
-    printf("Tempo gasto: %gs.", Tempo);
-    return;
+	LLI* vetor = leitor(nome, &tam);
 
+	printf("\n		EXECUTANDO O ARQUIVO COM %lld VALORES \n\n",tam);
 
-	
-	//imprime(vetor, tam);
+	char nome_ordenacao[50] = {"graficoOrdenação"};
+	char* nome_arquivo = strdup(strcat(nome_ordenacao, nome));
+	algoritmos_ordenacao(vetor, tam, nome_arquivo);
+	free(nome_arquivo);
 
+	char nome_busca[50] = {"graficoBusca"};
+	nome_arquivo = strdup(strcat(nome_busca, nome));
+	algoritmo_busca(vetor, tam, nome_arquivo);
+	free(nome_arquivo);
 
-
-	/*
-	
-	int inicio, fim, valor;
-	Find_MAX_sub_vetor_KADANE(vetor,tam,&inicio,&fim,&valor);
-	printf("\n\n\n inicio: %d, fim: %d, valor: %d",inicio, fim, valor);
-	
-	*/
-
-	verifica_ordenacao(vetor,tam);
-	
 }
+
+
 
 
 
 
 int main(){
 	
+	char nome_arquivo[] = {"file-1000"};
+	/* O controlador toma conta de toda a análize */
+	controlador("file-1000");	
+	controlador("file-10000");
 	controlador("file-100000");
-
 	return 0;
 }
 

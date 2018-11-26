@@ -3,17 +3,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+typedef long int LLI;
 
-int* leitor(char* file, int *tam){
+
+LLI* leitor(char* file, LLI *tam){
 
     // criando a variável ponteiro para o arquivo
     FILE *pont_arq;
-    int num;
-    int i;
+    LLI num;
+    LLI i;
     if(strcmp(file,"file-1000") == 0){
 		
 
-        int *vetor = (int*)calloc(1000,sizeof(int));
+        LLI *vetor = (LLI*)calloc(1000,sizeof(LLI));
 
         pont_arq = fopen(file, "r");
 
@@ -24,7 +26,7 @@ int* leitor(char* file, int *tam){
 
         *tam = 1000;
 	    for(i = 0; i < 1000; i++){
-		    fscanf(pont_arq, "%d,", &num);
+		    fscanf(pont_arq, "%ld,", &num);
 		    vetor[i] = num;
 	    }
         return vetor;
@@ -32,7 +34,7 @@ int* leitor(char* file, int *tam){
 
 	}else if(strcmp(file, "file-10000") == 0){
 		
-        int *vetor = (int*)calloc(10000,sizeof(int));
+        LLI *vetor = (LLI*)calloc(10000,sizeof(LLI));
 
         pont_arq = fopen(file, "r");
 
@@ -43,7 +45,7 @@ int* leitor(char* file, int *tam){
 
         *tam = 10000;
 	    for(i = 0; i < 10000; i++){
-		    fscanf(pont_arq, "%d,", &num);
+		    fscanf(pont_arq, "%ld,", &num);
 		    vetor[i] = num;
 	    }
         return vetor;
@@ -52,7 +54,7 @@ int* leitor(char* file, int *tam){
 
 	}else if(strcmp(file, "file-100000") == 0){
 		
-        int *vetor = (int*)calloc(100000,sizeof(int));
+        LLI *vetor = (LLI*)calloc(100000,sizeof(LLI));
 
         pont_arq = fopen(file, "r");
         
@@ -63,7 +65,7 @@ int* leitor(char* file, int *tam){
 
         *tam = 100000;
 	    for(i = 0; i < 100000; i++){
-		    fscanf(pont_arq, "%d,", &num);
+		    fscanf(pont_arq, "%ld,", &num);
 		    vetor[i] = num;
 	    }
         return vetor;
