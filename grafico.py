@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 import os # biblioteca pra usar o método de limpar a tela
 import threading
 import time
@@ -83,8 +82,6 @@ def main():
             "Algoritmo",
             "Tempo em milisegundos"
             )
-    
-    #geradorGrafico(dados,'tempo gasto', 'labsdsleX', 'labsdsdsely')
 
     # limpa a tela no Windows ou Linux
     # os.system('cls' if os.name == 'nt' else 'clear')
