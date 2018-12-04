@@ -2,14 +2,11 @@ from random import randint
 
 name = "file"
 
-with open(name + "-1000", "w+") as file:
-    for i in range(1000):
-        file.write("%d," % (randint(-999, 1000)))
+def gerar_arquivo_aleatorio(nome, quantidade):
+    with open(name + "-{}".format(quantidade), "w+") as file:
+        for i in range(quantidade):
+            file.write("%d," % (randint(-quantidade + 1, quantidade)))
 
-with open(name + "-10000", "w+") as file:
-    for i in range(10000):
-        file.write("%d," % (randint(-9999, 10000)))
-
-with open(name + "-100000", "w+") as file:
-    for i in range(100000):
-        file.write("%d," % (randint(-99999, 100000)))
+gerar_arquivo_aleatorio(name, 1000)
+gerar_arquivo_aleatorio(name, 10000)
+gerar_arquivo_aleatorio(name, 100000)

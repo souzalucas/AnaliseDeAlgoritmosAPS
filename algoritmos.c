@@ -86,20 +86,24 @@ void selection(LLI* v, LLI n, LLI *execucao){
 	}
 }
 
-void merge(LLI* v, LLI p, LLI m, LLI r){
+void merge(LLI* v, LLI p, LLI m, LLI r, LLI *execucao){
 	LLI n1 = m-p+1, n2 = r-m;
 	LLI i, j, k;
 	LLI v1[n1], v2[n2];
 
-	for(i = 0; i < n1; i++)
+	for(i = 0; i < n1; i++){
 		v1[i] = v[p+i];
-	for(j = 0; j < n2; j++)
+		*execucao +=1;
+	}
+	for(j = 0; j < n2; j++){
 		v2[j] = v[m+1+j];
-
+		*execucao +=1;
+	}
 	i = 0;
 	j = 0; 
 	k = p;
 	while(i < n1 && j < n2){
+		*execucao +=1;
 		if(v1[i] <= v2[j]){
 			v[k] = v1[i];
 			i++;
@@ -111,12 +115,14 @@ void merge(LLI* v, LLI p, LLI m, LLI r){
 	}
 
 	while(i < n1){
+		*execucao +=1;
 		v[k] = v1[i];
 		i++;
 		k++;
 	}
 
 	while(j < n2){
+		*execucao +=1;
 		v[k] = v2[j];
 		j++;
 		k++;
@@ -125,39 +131,37 @@ void merge(LLI* v, LLI p, LLI m, LLI r){
 
 void mergeSort(LLI* v, LLI p, LLI r, LLI *execucao){
 	LLI m;
+	*execucao +=1;
 	if(p < r){
 		m = p+(r-p)/2;
 
-		*execucao +=1;
-	
 		mergeSort(v, p, m,execucao);
 		mergeSort(v, m+1, r,execucao);
-		merge(v, p, m, r);
+		merge(v, p, m, r, execucao);
 	}
 }
 
 LLI BuscaBinaria(LLI* v, LLI x, LLI e, LLI d, LLI* execucao){
+	*execucao +=1;
 	LLI m = (e + d)/2;
 	if(v[m] == x)
 		return m;
 	if(e >= d)
 		return -1;
 	else{
-		if(v[m] < x){
-			*execucao +=1;
+		if(v[m] < x){			
 			return BuscaBinaria(v, x, m+1, d, execucao);
 		}else{
-			*execucao +=1;
 			return BuscaBinaria(v, x, e, m-1, execucao);
 		}
 	}
 }
 
-void levaTopo(LLI* v, LLI n, LLI p){
+void levaTopo(LLI* v, LLI n, LLI p, LLI *execucao){
     LLI d = 2*p + 1;
     LLI e = 2*p + 2;
     LLI maior = p; 
-
+	*execucao +=1;
     if(d < n && v[d] > v[maior]) 
         maior = d; 
   
@@ -166,7 +170,7 @@ void levaTopo(LLI* v, LLI n, LLI p){
   
     if(maior != p) { 
         troca(&v[p], &v[maior]); 
-        levaTopo(v, n, maior); 
+        levaTopo(v, n, maior, execucao); 
     } 
 }
 
@@ -174,12 +178,11 @@ void heapSort(LLI* v, LLI n, LLI *execucao){
 	LLI i, tam;
 
 	for(i = n/2 -1; i >= 0; i--){
-        levaTopo(v, n, i);
+        levaTopo(v, n, i, execucao);
 	}
     for(i = n-1; i >= 0; i--){
-		*execucao +=1;
         troca(&v[0], &v[i]);
-        levaTopo(v, i, 0);
+        levaTopo(v, i, 0, execucao);
     }
 }
 
@@ -229,13 +232,14 @@ void Find_MAX_sub_vetor_KADANE(LLI *vetor, LLI tam, LLI *inicio, LLI *fim , LLI 
 }
 
 
-LLI partition(LLI *vetor, LLI left, LLI right){
+LLI partition(LLI *vetor, LLI left, LLI right, LLI *execucao){
 
     LLI pivo = vetor[right];
     LLI i = (left - 1);
 	LLI j;
     for(j = left; j <= right-1; j++){
-        if(vetor[j] <= pivo){
+		*execucao +=1;
+        if(vetor[j] < pivo){
             i = i + 1;
             troca(&vetor[i], &vetor[j]);
         }
@@ -245,11 +249,41 @@ LLI partition(LLI *vetor, LLI left, LLI right){
 }
 
 /*PARA TESTAR O QUICKSORT, DEVE MANDAR TAMANHO -1 !!*/
+
+/*
+	## Escolha do pivô pode ser dessas maneiras: ##
+
+	
+	@ Primeiro elemento
+	@ Último elemento
+	@ Elemento do meio
+	@ Elemento aleatório
+	@ Mediana de 3 (primeiro, meio e último)
+	@ Mediana de 3 (aleatório)
+	@ Mediana de 3 de três mediana de 3
+
+	Quicksort: Escolha do Pivo
+
+	Primeiro elemento
+	Pior caso: quandos os elementos estão em ordem crescente ou	decrescente
+	Exemplo: | 0 | 1 | 3 | 4 | 5 | 7 | 9 |
+
+	Último elemento
+	Pior caso: quando os elementos estão em ordem crescente ou decrescente
+	Exemplo: | 9 | 7 | 5 | 4 | 3 | 1 | 0 |
+
+	Elemento do meio
+	Pior caso: quando os elementos formam um triângulo
+	Exemplo: | 1 | 2 | 3 | 4 | 3 | 2 | 1 |
+	
+	Elemento aleatório
+	Pior caso: depende da escolha dos índices (índices: 3, 0, 2, 6, 5, 1, 4)
+	Exemplo: | 3 | 8 | 4 | 0 | 9 | 7 | 5 |
+*/
 void quicksort(LLI *vetor, LLI left, LLI right, LLI *execucao){
-    if(left < right){
-        LLI q = partition(vetor, left, right);
-        
-		*execucao +=1;
+	*execucao +=1;
+	if(left < right){
+        LLI q = partition(vetor, left, right, execucao);
         quicksort(vetor, left, q-1, execucao);
         quicksort(vetor, q+1,right, execucao);
     }
@@ -316,7 +350,7 @@ LLI algoritmo_busca(LLI *vetor, LLI tam, char* nome_arquivo){
 	LLI encontrado = BuscaBinaria(vetor, valor_buscar, 0,tam, &quantidade_loop);
 	fim = clock();
 
-	printf("Busca Binaria: Valor buscado = %ld		( com vetor ordenado! )\n", encontrado);
+	printf("Busca Binaria: Valor buscado = %ld		( com vetor ordenado! )\n", vetor[encontrado]);
 	tempo = ((double)(fim - inicio) / CLOCKS_PER_SEC);	
 	fprintf(arquivo, "BuscaBinária %g %ld\n", tempo, quantidade_loop);
 	
@@ -446,6 +480,8 @@ void algoritmos_ordenacao(LLI *vetor, LLI tam, char* nome_arquivo){
 	
 	printf("quicksort: ");
 	verifica_ordenacao(vetorQuick, tam);
+	
+
 
 
 	fclose(arquivo);
@@ -476,6 +512,7 @@ void controlador(char* nome){
 	char* nome_arquivo = strdup(strcat(nome_ordenacao, nome));
 	algoritmos_ordenacao(vetor, tam, nome_arquivo);
 	free(nome_arquivo);
+
 
 	char nome_busca[50] = {"graficoBusca"};
 	nome_arquivo = strdup(strcat(nome_busca, nome));

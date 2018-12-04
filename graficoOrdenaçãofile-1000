@@ -1,7 +1,7 @@
-BubbleSort 0.005213 999000
-BubbleSortOtimizado 0.00396 498174
-InsertionSort 0.001252 234409
-SelectionSort 0.002149 499500
-MergeSort 0.000251 1000
-HeapSort 0.000246 1000
-QuickSort 0.000148 662
+BubbleSort 0.004234 999000
+BubbleSortOtimizado 0.002857 499094
+InsertionSort 0.000743 248722
+SelectionSort 0.001498 499500
+MergeSort 0.000194 21975
+HeapSort 0.000244 9607
+QuickSort 0.000161 12036
